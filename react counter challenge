@@ -1,0 +1,81 @@
+import React from "react";
+import "./styles.css";
+
+const Button = (props) => {
+  return (
+    <button onClick={() => props.handleClick(props.counter)}>
+      {" "}
+      increment{" "}
+    </button>
+  );
+};
+
+class Counter extends React.Component {
+  render() {
+    return (
+      <div>
+        {this.props.counter.defaultNumber}{" "}
+        <Button
+          counter={this.props.counter}
+          handleClick={this.props.handleClick}
+        />
+      </div>
+    );
+  }
+}
+
+class App extends React.Component {
+  state = {
+    counters: [
+      { id: 1, value: 7, defaultNumber: 7 },
+      { id: 2, value: 15, defaultNumber: 15 },
+      { id: 3, value: 25, defaultNumber: 25 },
+      { id: 4, value: 35, defaultNumber: 35 },
+    ],
+  };
+
+  handleClick = (counter) => {
+    this.setState((prevState) => {
+      const updatedCounters = prevState.counters.map((c) => {
+        if (c.id === counter.id) {
+          const updatedCounter = {
+            ...c,
+            defaultNumber: c.defaultNumber + c.value,
+          };
+
+          <Counter
+            key={counter.id}
+            counter={updatedCounter}
+            handleClick={this.handleClick}
+          />;
+
+          return updatedCounter;
+        }
+        return c;
+      });
+      return { counters: updatedCounters };
+    });
+
+    console.log(`updated`);
+    console.log(`updating counter with id ${counter.id}`);
+    console.log(
+      `previous default number: with id ${counter.id} is ${counter.defaultNumber}`
+    );
+  };
+
+  render() {
+    return (
+      <div class="App">
+        {this.state.counters.map((counter) => (
+          <Counter
+            key={counter.id}
+            counter={counter}
+            handleClick={this.handleClick}
+          />
+        ))}
+      </div>
+    );
+  }
+}
+
+export default App;
